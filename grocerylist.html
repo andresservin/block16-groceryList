@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grocery List Workshop</title>
+    <script src="grocerylist.js"></script>
+</head>
+<body>
+    <h1>Grocery List</h1>
+
+    <div>
+        <h2>Available Items</h2>
+        <ul id="itemList"></ul>
+    </div>
+
+    <div>
+        <h2>Add Items to Cart</h2>
+        <label for="itemIdInput">Enter item IDs (comma-separated):</label>
+        <input type="text" id="itemIdInput">
+        <button onclick="addToCart()">Add to Cart</button>
+    </div>
+
+    <div>
+        <h2>Cart</h2>
+        <ul id="cartList"></ul>
+        <p>Total Price: <span id="cartTotalPrice"></span></p>
+    </div>
+
+    <script>
+        // Function to display available items
+        function displayItems() {
+            const itemList = document.getElementById('itemList');
+            itemList.innerHTML = '';
+            items.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - Price: $${item.price}`;
+                itemList.appendChild(li);
+            });
+        }
+
+        // Function to add items to cart
+        function addToCart() {
+            const input = document.getElementById('itemIdInput').value;
+            const ids = input.split(',').map(id => parseInt(id.trim()));
+
+            ids.forEach(id => {
+                const item = findItemById(id);
+                if (item) {
+                    cart.push(id);
+                }
+            });
+
+            displayCart();
+        }
+
+        // Function to display cart items and total price
+        function displayCart() {
+            const cartList = document.getElementById('cartList');
+            const cartTotalPrice = document.getElementById('cartTotalPrice');
+            
+            cartList.innerHTML = '';
+            let totalPrice = 0;
+
+            cart.forEach(id => {
+                const item = findItemById(id);
+                if (item) {
+                    const li = document.createElement('li');
+                    li.textContent = `${item.name} - Price: $${item.price}`;
+                    cartList.appendChild(li);
+                    totalPrice += item.price;
+                }
+            });
+
+            cartTotalPrice.textContent = `$${totalPrice.toFixed(2)}`;
+        }
+
+        // Display initial items and cart when the page loads
+        displayItems();
+        displayCart();
+    </script>
+</body>
+</html>
